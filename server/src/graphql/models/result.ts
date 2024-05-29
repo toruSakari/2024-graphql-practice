@@ -1,7 +1,8 @@
 import { builder } from '@/graphql/builder'
-import { Result } from '@/types/graphql/schema'
 
-export const ResultType = builder.objectRef<Result>('Result');
+export const ResultType = builder.objectRef<{
+  success: boolean
+}>('Result');
 
 builder.objectType(ResultType, {
   name: 'Result',

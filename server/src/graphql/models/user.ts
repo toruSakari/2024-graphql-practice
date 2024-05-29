@@ -1,8 +1,10 @@
 import { builder } from '@/graphql/builder'
 import type { User, Post } from '@/db/schema'
 import './post'
-import { PostService } from '@/services'
-import { resolveCursorConnection, ResolveCursorConnectionArgs, decodeGlobalID } from '@pothos/plugin-relay'
+import { container } from '@/lib/ioc/config'
+import { TYPES } from '@/lib/ioc/types'
+import type { PostService } from '@/services'
+import { resolveCursorConnection, ResolveCursorConnectionArgs } from '@pothos/plugin-relay'
 
 export const UserType = builder.objectRef<User & {
   posts: Post[]
@@ -26,16 +28,20 @@ builder.objectType(UserType, {
       description: 'ユーザーが投稿した記事一覧',
       type: 'Post',
       resolve: async ({ id }, args, ctx) => {
-        const postService = new PostService(ctx)
-        const { total } = await postService.getTotalFromAuthorId(id)
+        const postService = container.get<PostService>(TYPES.PostService)
+        const total = await postService.getTotalFromAuthorId(id)
         const result = await resolveCursorConnection(
           {
             args,
             toCursor: (post) => post.id.toString(),
           },
-          (cursorOptions: ResolveCursorConnectionArgs) => {
-            return postService.getAllFromAuthorId(cursorOptions, id)
-          }
+          ({ limit, inverted, before, after }: ResolveCursorConnectionArgs) =>
+            postService.getAllAuthorPosts({
+              limit,
+              inverted,
+              before: Number(before) || undefined,
+              after: Number(after) || undefined,
+            }, id)
         )
         return { total, ...result }
       },

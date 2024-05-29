@@ -1,0 +1,45 @@
+{
+  "scripts": {
+    "dev": "NODE_ENV=development bun run --hot src/index.ts ",
+    "generate": "npm run drizzle-kit generate:pg --config=drizzle.config.ts",
+    "push": "npm run drizzle-kit push:pg --config=drizzle.config.ts",
+    "studio": "npm run drizzle-kit studio --port 3000 --host 0.0.0.0",
+    "seed": "node --loader esbuild-register/loader -r esbuild-register ./src/seed/index.ts",
+    "start": "node --loader esbuild-register/loader -r esbuild-register ./src/index.ts"
+  },
+  "dependencies": {
+    "@graphql-authz/apollo-server-plugin": "^3.1.1",
+    "@graphql-authz/directive": "^1.1.4",
+    "@pothos/core": "^3.41.1",
+    "@pothos/plugin-authz": "^3.5.9",
+    "@pothos/plugin-relay": "^3.46.0",
+    "@pothos/plugin-scope-auth": "^3.22.0",
+    "@pothos/plugin-validation": "^3.10.1",
+    "@whatwg-node/server-plugin-cookies": "^1.0.2",
+    "bcrypt": "^5.1.1",
+    "drizzle-graphql": "^0.3.5",
+    "drizzle-orm": "^0.30.10",
+    "drizzle-zod": "^0.5.1",
+    "graphql": "^16.8.1",
+    "graphql-scalars": "^1.23.0",
+    "graphql-yoga": "^5.3.0",
+    "hono": "^4.2.9",
+    "i18next": "^23.11.4",
+    "inversify": "^6.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.5",
+    "reflect-metadata": "^0.2.2",
+    "zod": "^3.23.8",
+    "zod-i18n-map": "^2.27.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@types/bcrypt": "^5.0.2",
+    "@types/bun": "latest",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/pg": "^8.11.6",
+    "drizzle-kit": "^0.21.1",
+    "esbuild-register": "^3.5.0"
+  },
+  "type": "module"
+}
